@@ -14,5 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/admin','AdminController@login');
+//admin route
+Route::match(['get','post'],'/admin','AdminController@login');
+Route::get('/logout', 'AdminController@logout')->name('logout');
+Route::group(['middleware'=>['auth']],function (){
+    Route::get('/admin/dashboard','AdminController@dashboard');
+});
+
+
+
