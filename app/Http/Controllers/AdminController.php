@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use http\Url;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
@@ -35,6 +37,22 @@ class AdminController extends Controller
         return view('admin.dashboard');
     }
 
+    public function setting()
+    {
+        return view('admin.setting');
+    }
+
+    public function check_password(Request $request)
+    {
+        $data=$request->all();
+        $current_password=$data['current_pwd'];
+        $check_password=User::where(['admin'=>'1'])->first();
+        if (Hash::check($current_password,$check_password->password)){
+            echo "true";die;
+        }else{
+            echo "false";die;
+        }
+    }
     public function logout()
     {
         Session::flush();
