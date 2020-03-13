@@ -6,6 +6,18 @@
             <h1>Categories</h1>
         </div>
         <div class="container-fluid">
+            @if(Session::has('flash_message_error'))
+                <div class="alert alert-error alert-block">
+                    <button type="button" class="close" data-dismiss="alert">x</button>
+                    <strong>{!! session('flash_message_error') !!}</strong>
+                </div>
+            @endif
+            @if(Session::has('flash_message_success'))
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss="alert">x</button>
+                    <strong>{!! session('flash_message_success') !!}</strong>
+                </div>
+            @endif
             <hr>
             <div class="row-fluid">
                 <div class="span12">
@@ -19,6 +31,7 @@
                                 <tr>
                                     <th>Category ID</th>
                                     <th>Name</th>
+                                    <th>Category Level</th>
                                     <th>URL</th>
                                     <th>Action</th>
                                 </tr>
@@ -28,10 +41,11 @@
                                 <tr class="gradeX">
                                     <td>{{$category->id}}</td>
                                     <td>{{$category->name}}</td>
+                                    <td>{{$category->parent_id}}</td>
                                     <td>{{$category->url}}</td>
                                     <td class="center">
-                                        <a href="" class="btn btn-primary btn-mini">Edit</a>
-                                        <a href="" class="btn btn-danger btn-mini">Delete</a>
+                                        <a href="{{url('/admin/update_category/'.$category->id)}}" class="btn btn-primary btn-mini">Edit</a>
+                                        <a id="delCat" href="{{url('/admin/delete_category/'.$category->id)}}" class="btn btn-danger btn-mini">Delete</a>
                                     </td>
                                 </tr>
                                 @endforeach

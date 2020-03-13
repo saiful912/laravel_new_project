@@ -133,4 +133,11 @@ $(document).ready(function(){
 			$(element).parents('.control-group').addClass('success');
 		}
 	});
+
+	$("#delCat").click(function () {
+        if (confirm('Are You Sure You Want to Delete This Category?')){
+            return true;
+        }
+        return false;
+    });
 });

@@ -3,7 +3,7 @@
     <div id="content">
         <div id="content-header">
             <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Category</a></div>
-            <h1>New Category</h1>
+            <h1>Edit Category</h1>
         </div>
         <div class="container-fluid"><hr>
             <div class="row-fluid">
@@ -22,15 +22,15 @@
                 <div class="span12">
                     <div class="widget-box">
                         <div class="widget-title"> <span class="icon"> <i class="icon-info-sign"></i> </span>
-                            <h5>Add Category</h5>
+                            <h5>Edit Category</h5>
                         </div>
                         <div class="widget-content nopadding">
-                            <form class="form-horizontal" method="post" action="{{url('/admin/add_category')}}" name="add_category" id="add_category" novalidate="novalidate">
+                            <form class="form-horizontal" method="post" action="{{url('/admin/update_category/'.$category->id)}}" name="add_category" id="add_category" novalidate="novalidate">
                                 {{csrf_field()}}
                                 <div class="control-group">
                                     <label class="control-label">Category Name</label>
                                     <div class="controls">
-                                        <input type="text" name="name" id="name">
+                                        <input type="text" name="name" id="name" value="{{$category->name}}">
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -39,26 +39,25 @@
                                         <select name="parent_id" id="parent_id" style="width: 220px;">
                                             <option value="0">Main Category</option>
                                             @foreach($levels as $level)
-                                                <option value="{{$level->id}}">{{$level->name}}</option>
+                                                <option value="{{$level->id}}" @if($level->id==$category->parent_id) selected @endif>{{$level->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
                                 <div class="control-group">
                                     <label class="control-label">Category Description</label>
                                     <div class="controls">
-                                        <textarea name="description" id="description"></textarea>
+                                        <textarea name="description" id="description">{{$category->description}}</textarea>
                                     </div>
                                 </div>
 
                                 <div class="control-group">
                                     <label class="control-label">URL (Start with http://)</label>
                                     <div class="controls">
-                                        <input type="text" name="url" id="url">
+                                        <input type="text" name="url" id="url" value="{{$category->url}}">
                                     </div>
                                 </div>
                                 <div class="form-actions">
-                                    <input type="submit" value="Add Category" class="btn btn-success">
+                                    <input type="submit" value="Update Category" class="btn btn-success">
                                 </div>
                             </form>
                         </div>
@@ -68,3 +67,4 @@
         </div>
     </div>
 @stop
+
