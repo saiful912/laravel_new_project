@@ -56,10 +56,25 @@
                                                 @endif
                                         </td>
                                         <td class="center">
-                                            <a href="" class="btn btn-primary btn-mini">Edit</a>
+                                            <a href="#view_product{{$product->id}}" data-toggle="modal" class="btn btn-success btn-mini">View</a>
+                                            <a href="{{url('/admin/edit_product/'.$product->id)}}" class="btn btn-primary btn-mini">Edit</a>
                                             <a id="delCat" href="" class="btn btn-danger btn-mini">Delete</a>
                                         </td>
                                     </tr>
+
+                                    <div id="view_product{{$product->id}}" class="modal hide">
+                                        <div class="modal-header">
+                                            <button data-dismiss="modal" class="close" type="button">x</button>
+                                            <h3>{{$product->product_name}} view details</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Category Name: {{$product->category_name}}</p>
+                                            <p>Product Code: {{$product->product_code}}</p>
+                                            <p>Product Color: {{$product->product_code}}</p>
+                                            <p>Product Price: {{$product->price}}</p>
+                                            <p>Product Description: {{$product->description}}</p>
+                                        </div>
+                                    </div>
                                 @endforeach
                                 </tbody>
                             </table>
