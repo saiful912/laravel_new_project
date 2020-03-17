@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Product;
+use App\ProductsAttribute;
 use DemeterChain\C;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image;
 
@@ -136,5 +138,40 @@ class ProductsController extends Controller
     {
         Product::where(['id'=>$id])->update(['image'=>'']);
         return back()->with('flash_message_success','Image Deleted');
+    }
+
+    public function delete_product($id)
+    {
+        $product = Product::find($id);
+        if (!is_null($product)) {
+            //delete category image
+            if (File::exists('images/backend_image/product/large/' . $product->image)) {
+                File::delete('images/backend_image/product/large' . $product->image);
+            }
+            $product->delete();
+        }
+        return back()->with('flash_message_success','Product Deleted');
+    }
+
+    public function add_attribute(Request $request,$id=null)
+    {
+        $productDetails=Product::where(['id'=>$id])->first();
+        if ($request->isMethod('post')){
+            $data=$request->all();
+            foreach ($data['sku'] as $key=>$val){
+                if (!empty($val)){
+                    $attribute=new ProductsAttribute();
+                    $attribute->product_id=$id;
+                    $attribute->sku=$val;
+                    $attribute->size=$data['size'][$key];
+                    $attribute->price=$data['price'][$key];
+                    $attribute->stock=$data['stock'][$key];
+                    $attribute->save();
+
+                }
+            }
+            return redirect()->back()->with('flash_message_success','Product Attributes has been added');
+        }
+        return view('admin.products.add_attribute',compact('productDetails'));
     }
 }
