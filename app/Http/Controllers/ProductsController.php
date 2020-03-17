@@ -155,7 +155,7 @@ class ProductsController extends Controller
 
     public function add_attribute(Request $request,$id=null)
     {
-        $productDetails=Product::where(['id'=>$id])->first();
+        $productDetails=Product::with('attributes')->where(['id'=>$id])->first();
         if ($request->isMethod('post')){
             $data=$request->all();
             foreach ($data['sku'] as $key=>$val){
@@ -173,5 +173,11 @@ class ProductsController extends Controller
             return redirect()->back()->with('flash_message_success','Product Attributes has been added');
         }
         return view('admin.products.add_attribute',compact('productDetails'));
+    }
+
+    public function delete_attribute($id)
+    {
+        ProductsAttribute::where(['id'=>$id])->delete();
+        return redirect()->back()->with('flash_message_success','Product Attributes has been Deleted');
     }
 }

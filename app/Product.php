@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $guarded=[];
+
+    public function attributes()
+    {
+        return $this->hasMany(ProductsAttribute::class,'product_id');
+    }
 }
