@@ -63,6 +63,14 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
+                                    <label class="control-label">Material & Care</label>
+                                    <div class="controls">
+                                        <textarea name="care" id="care">
+                                             {{$productDetails->care}}
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="control-group">
                                     <label class="control-label">Product Price</label>
                                     <div class="controls">
                                         <input type="number" name="price" id="price" value="{{$productDetails->price}}">
@@ -77,6 +85,13 @@
                                         <img style="width: 40px" src="{{asset('images/backend_image/product/small/'.$productDetails->image)}}" alt="small">|
                                         <a href="{{url('/admin/delete_product_image/'.$productDetails->id)}}">Delete</a>
                                             @endif
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label">Enable</label>
+                                    <div class="controls">
+                                        <input type="checkbox" name="status" id="status" @if($productDetails->status=="1") checked @endif value="1">
                                     </div>
                                 </div>
                                 <div class="form-actions">

@@ -14,6 +14,12 @@
                 <li><a href="{{url('/admin/view_product')}}">View Product</a></li>
             </ul>
         </li>
+        <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Coupons</span> <span class="label label-important">2</span></a>
+            <ul>
+                <li><a href="{{url('/admin/add-coupon')}}">Add Coupon</a></li>
+                <li><a href="{{url('/admin/view_coupon')}}">View Coupon</a></li>
+            </ul>
+        </li>
     </ul>
 </div>
 <!--sidebar-menu-->

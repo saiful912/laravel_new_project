@@ -67,6 +67,8 @@
                             <h5>Product Attribute</h5>
                         </div>
                         <div class="widget-content nopadding">
+                            <form action="{{url('admin/edit_attribute/'.$productDetails->id)}}" method="post">
+                                @csrf
                             <table class="table table-bordered data-table">
                                 <thead>
                                 <tr>
@@ -81,13 +83,13 @@
                                 <tbody>
                                 @foreach($productDetails->attributes as $attribute)
                                     <tr class="gradeX">
-                                        <td>{{$attribute->id}}</td>
+                                        <td><input type="hidden" name="idAttr[]" value="{{$attribute->id}}">{{$attribute->id}}</td>
                                         <td>{{$attribute->sku}}</td>
                                         <td>{{$attribute->size}}</td>
-                                        <td>{{$attribute->price}}</td>
-                                        <td>{{$attribute->stock}}</td>
+                                        <td><input type="text" name="price[]" value="{{$attribute->price}}"></td>
+                                        <td><input type="text" name="stock[]" value="{{$attribute->stock}}"></td>
                                         <td class="center">
-                                            <a href="" class="btn btn-primary btn-mini">Edit</a>
+                                            <input type="submit" value="Update" class="btn btn-primary btn-mini">
                                             <a id="" href="#deleteAttribute{{$attribute->id}}" data-toggle="modal"  class="btn btn-danger btn-mini">Delete</a>
                                             <!-- Modal -->
                                             <div class="modal fade" id="deleteAttribute{{$attribute->id}}" tabindex="-1"
@@ -124,6 +126,7 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            </form>
                         </div>
                     </div>
                 </div>

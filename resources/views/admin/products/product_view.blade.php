@@ -56,10 +56,11 @@
                                                 @endif
                                         </td>
                                         <td class="center">
-                                            <a href="#view_product{{$product->id}}" data-toggle="modal" class="btn btn-success btn-mini">View</a>
-                                            <a href="{{url('/admin/add_attribute/'.$product->id)}}"  class="btn btn-info btn-mini">Add</a>
-                                            <a href="{{url('/admin/edit_product/'.$product->id)}}" class="btn btn-primary btn-mini">Edit</a>
-                                            <a id="" href="#deleteModal{{$product->id}}" data-toggle="modal" class="btn btn-danger btn-mini">Delete</a>
+                                            <a href="#view_product{{$product->id}}" data-toggle="modal" title="Product View" class="btn btn-success btn-mini">View</a>
+                                            <a href="{{url('/admin/add_attribute/'.$product->id)}}" title="Add Attribute" class="btn btn-info btn-mini">Add</a>
+                                            <a href="{{url('/admin/edit_product/'.$product->id)}}" title="Edit Product" class="btn btn-success btn-mini">Edit</a>
+                                            <a href="{{url('/admin/add_image/'.$product->id)}}" title="Add Image" class="btn btn-primary btn-mini">Add</a>
+                                            <a id="" href="#deleteModal{{$product->id}}" title="Product Delete" data-toggle="modal" class="btn btn-danger btn-mini">Delete</a>
 
                                             <!-- Modal -->
                                             <div class="modal fade" id="deleteModal{{$product->id}}" tabindex="-1"
@@ -102,7 +103,7 @@
                                         <div class="modal-body">
                                             <p>Category Name: {{$product->category_name}}</p>
                                             <p>Product Code: {{$product->product_code}}</p>
-                                            <p>Product Color: {{$product->product_code}}</p>
+                                            <p>Product Color: {{$product->product_color}}</p>
                                             <p>Product Price: {{$product->price}}</p>
                                             <p>Product Description: {{$product->description}}</p>
                                         </div>

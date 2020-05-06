@@ -11,11 +11,23 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','IndexController@index')->name('home');
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+
+//category listing page
+Route::get('/products/category/{id}', 'ProductsController@show')->name('categories.show');
+Route::get('/products/{url}', 'ProductsController@products');
+//product detail page
+Route::get('/product/{id}','ProductsController@product_view');
+//get product attribute price
+Route::get('/get-product-price','ProductsController@getProductPrice');
+//add to cart
+Route::match(['get','post'],'/add_cart','ProductsController@add_to_cart');
+//cart route
+Route::match(['get','post'],'/cart','ProductsController@cart_page');
+Route::get('/cart/update-quantity/{id}/{quantity}','ProductsController@updateCartProduct');
+Route::get('/cart/delete-product/{id}','ProductsController@deleteCartProduct');
 
 //admin route
 Route::match(['get','post'],'/admin','AdminController@login');
@@ -40,7 +52,13 @@ Route::group(['middleware'=>['auth']],function (){
     Route::get('/admin/delete_product_image/{id}','ProductsController@delete_product_image');
     //attribute route
     Route::match(['get','post'],'/admin/add_attribute/{id}','ProductsController@add_attribute');
+    Route::match(['get','post'],'/admin/edit_attribute/{id}','ProductsController@edit_attribute');
     Route::post('/admin/delete_attribute/{id}','ProductsController@delete_attribute');
+    Route::match(['get','post'],'/admin/add_image/{id}','ProductsController@addImage');
+    Route::post('/admin/delete_image/{id}','ProductsController@deleteImage');
+    //coupons Route
+    Route::match(['get','post'],'/admin/add-coupon','CouponsController@add_coupon');
+    Route::get('/admin/view_coupon','CouponsController@view_coupon');
 });
 
 

@@ -32,7 +32,7 @@
 {{--<script src="{{asset('js/backend_js/matrix.popover.js')}}"></script>--}}
 {{--<script src="{{asset('js/backend_js/excanvas.min.js')}}"></script>--}}
 <script src="{{asset('js/backend_js/jquery.min.js')}}"></script>
-<script src="{{asset('js/backend_js/jquery.ui.custom.js')}}"></script>
+{{--<script src="{{asset('js/backend_js/jquery.ui.custom.js')}}"></script>--}}
 <script src="{{asset('js/backend_js/matrix.form_validation.js')}}"></script>
 <script src="{{asset('js/backend_js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/backend_js/jquery.uniform.js')}}"></script>
@@ -43,7 +43,15 @@
 <script src="{{asset('js/backend_js/matrix.tables.js')}}"></script>
 <script src="{{asset('js/backend_js/matrix.popover.js')}}"></script>
 
-
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function () {
+        $("#expiry_date").datepicker({
+            minDate:0,
+            dateFormat:'yy-mm-dd'
+        });
+    });
+</script>
 {{--<script src="{{asset('js/backend_js/jquery.flot.min.js')}}"></script>--}}
 {{--<script src="{{asset('js/backend_js/jquery.flot.resize.min.js')}}"></script>--}}
 {{--<script src="{{asset('js/backend_js/jquery.peity.min.js')}}"></script>--}}
