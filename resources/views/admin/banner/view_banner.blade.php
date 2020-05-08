@@ -23,38 +23,33 @@
                 <div class="span12">
                     <div class="widget-box">
                         <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
-                            <h5>All Coupons</h5>
+                            <h5>All Banners</h5>
                         </div>
                         <div class="widget-content nopadding">
                             <table class="table table-bordered data-table">
                                 <thead>
                                 <tr>
-                                    <th>Coupon ID</th>
-                                    <th>Coupon Code</th>
-                                    <th>Amount</th>
-                                    <th>Amount Type</th>
-                                    <th>Created Date</th>
-                                    <th>Expiry Date</th>
+                                    <th>ID</th>
+                                    <th>Banner Image</th>
+                                    <th>Title</th>
+                                    <th>Link</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($coupons as $coupon)
+                                @foreach($banners as $banner)
                                     <tr class="gradeX">
-                                        <td>{{$coupon->id}}</td>
-                                        <td>{{$coupon->coupon_code}}</td>
+                                        <td>{{$banner->id}}</td>
                                         <td>
-                                            {{$coupon->amount}}@if($coupon->amount_type=="Percentage")%@else TK
-                                                @endif
+                                            <img src="{{asset('images/frontend_image/banner/'.$banner->image)}}" alt="bannerImage" width="250px">
                                         </td>
-                                        <td>{{$coupon->amount_type}}</td>
-                                        <td>{{$coupon->created_at}}</td>
-                                        <td>{{$coupon->expiry_date}}</td>
-                                        <td>@if($coupon->status==1)Active @else Inactive @endif</td>
+                                        <td>{{$banner->title}}</td>
+                                        <td>{{$banner->link}}</td>
+                                        <td>@if($banner->status==1)Active @else Inactive @endif</td>
                                         <td class="center">
-                                            <a href="{{url('/admin/edit-coupon/'.$coupon->id)}}" class="btn btn-primary btn-mini">Edit</a>
-                                            <a id="delCat" href="{{url('/admin/delete_coupon/'.$coupon->id)}}" class="btn btn-danger btn-mini">Delete</a>
+                                            <a href="{{url('/admin/edit-banner/'.$banner->id)}}" class="btn btn-primary btn-mini">Edit</a>
+                                            <a id="delCat" href="{{url('/admin/delete_banner/'.$banner->id)}}" class="btn btn-danger btn-mini">Delete</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -67,4 +62,5 @@
         </div>
     </div>
 @stop
+
 

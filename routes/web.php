@@ -28,7 +28,8 @@ Route::match(['get','post'],'/add_cart','ProductsController@add_to_cart');
 Route::match(['get','post'],'/cart','ProductsController@cart_page');
 Route::get('/cart/update-quantity/{id}/{quantity}','ProductsController@updateCartProduct');
 Route::get('/cart/delete-product/{id}','ProductsController@deleteCartProduct');
-
+//apply coupon
+Route::post('/cart/apply-coupon','ProductsController@applyCoupon');
 //admin route
 Route::match(['get','post'],'/admin','AdminController@login');
 Route::get('/logout', 'AdminController@logout')->name('logout');
@@ -59,6 +60,13 @@ Route::group(['middleware'=>['auth']],function (){
     //coupons Route
     Route::match(['get','post'],'/admin/add-coupon','CouponsController@add_coupon');
     Route::get('/admin/view_coupon','CouponsController@view_coupon');
+    Route::get('/admin/delete_coupon/{id}','CouponsController@coupon_delete');
+    Route::match(['get','post'],'/admin/edit-coupon/{id}','CouponsController@edit_coupon');
+    //coupons Route
+    Route::match(['get','post'],'/admin/add-banner','BannersController@add_banner');
+    Route::get('/admin/view_banner','BannersController@view_banner');
+    Route::get('/admin/delete_banner/{id}','BannersController@banner_delete');
+    Route::match(['get','post'],'/admin/edit-banner/{id}','BannersController@edit_banner');
 });
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Banner;
 use App\Category;
 use App\Product;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ class IndexController extends Controller
 //                echo $sub_cat->name;echo "<br>";
 //            }
 //        }
-        return view('index',compact('products','categories'));
+        $banners=Banner::where('status',1)->get();
+        return view('index',compact('products','categories','banners'));
     }
 }
