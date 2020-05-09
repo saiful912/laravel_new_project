@@ -30,6 +30,10 @@ Route::get('/cart/update-quantity/{id}/{quantity}','ProductsController@updateCar
 Route::get('/cart/delete-product/{id}','ProductsController@deleteCartProduct');
 //apply coupon
 Route::post('/cart/apply-coupon','ProductsController@applyCoupon');
+//login register route
+Route::match(['get','post'],'/login-register','UsersController@register');
+//check if user already exists
+Route::match(['get','post'],'/check-email','UsersController@checkEmail');
 //admin route
 Route::match(['get','post'],'/admin','AdminController@login');
 Route::get('/logout', 'AdminController@logout')->name('logout');

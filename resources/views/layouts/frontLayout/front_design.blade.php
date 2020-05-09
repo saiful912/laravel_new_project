@@ -34,6 +34,7 @@
 {{--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>--}}
 
 <script src="{{asset('js/frontend_js/jquery.js')}}"></script>
+<script src="{{asset('js/frontend_js/jquery.validate.js')}}"></script>
 <script src="{{asset('js/frontend_js/easyzoom.js')}}"></script>
 <script src="{{asset('js/frontend_js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/frontend_js/jquery.scrollUp.min.js')}}"></script>
