@@ -129,5 +129,34 @@ $().ready(function () {
                 minlength:"Your Password must be at least 6 characters long"
             }
         }
-    })
+    });
+    //login form validation
+    $("#loginForm").validate({
+        rules:{
+            email:{
+                required:true,
+                email: true,
+            },
+            password:{
+                required:true,
+            }
+        },
+        message:{
+
+            email:{
+                required:"Please Enter Your Email",
+                email:"Please Enter Valid Email",
+            },
+            password: {
+                required:"Please Provide Your password",
+            }
+        }
+    });
+    //strong password set
+    $('#myPassword').passtrength({
+        minChars: 4,
+        passwordToggle: true,
+        tooltip: true,
+        eyeImg:"/images/frontend_image/eye.svg"
+    });
 });

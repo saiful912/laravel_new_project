@@ -12,6 +12,7 @@
     <link href="{{asset('css/frontend_css/prettyPhoto.css')}}" rel="stylesheet">
     <link href="{{asset('css/frontend_css/price-range.css')}}" rel="stylesheet">
     <link href="{{asset('css/frontend_css/animate.css')}}" rel="stylesheet">
+    <link href="{{asset('css/frontend_css/passtrength.css')}}" rel="stylesheet">
     <link href="{{asset('css/frontend_css/main.css')}}" rel="stylesheet">
     <link href="{{asset('css/frontend_css/responsive.css')}}" rel="stylesheet">
 
@@ -40,6 +41,7 @@
 <script src="{{asset('js/frontend_js/jquery.scrollUp.min.js')}}"></script>
 <script src="{{asset('js/frontend_js/price-range.js')}}"></script>
 <script src="{{asset('js/frontend_js/jquery.prettyPhoto.js')}}"></script>
+<script src="{{asset('js/frontend_js/passtrength.js')}}"></script>
 <script src="{{asset('js/frontend_js/main.js')}}"></script>
 
 <script>

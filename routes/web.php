@@ -30,8 +30,22 @@ Route::get('/cart/update-quantity/{id}/{quantity}','ProductsController@updateCar
 Route::get('/cart/delete-product/{id}','ProductsController@deleteCartProduct');
 //apply coupon
 Route::post('/cart/apply-coupon','ProductsController@applyCoupon');
+
 //login register route
 Route::match(['get','post'],'/login-register','UsersController@register');
+////user register form submit
+Route::post('/user-register','UsersController@register');
+////user login page
+Route::get('/login-user','UsersController@userLoginregister');
+Route::post('/user-login','UsersController@login');
+//user account
+//all route after login
+Route::group(['middleware'=>['frontlogin']],function (){
+    Route::match(['get','post'],'/account','UsersController@account');
+});
+
+//user logout
+Route::get('/user-logout','UsersController@logout');
 //check if user already exists
 Route::match(['get','post'],'/check-email','UsersController@checkEmail');
 //admin route
