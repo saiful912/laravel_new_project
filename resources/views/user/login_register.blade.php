@@ -36,8 +36,8 @@
                 <div class="col-sm-4">
                     <div class="signup-form"><!--sign up form-->
                         <h2>New User Signup!</h2>
-                        {{--<for  action="{{url('/login-register')}}" method="post">--}}
-                        <form id="registerForm" action="{{url("/user-register")}}" method="post">
+                        {{--<for id="registerForm" action="{{url('/login-register')}}" method="post">--}}
+                        <form id="registerForm"  name="registerForm"  action="{{url("/user-register")}}" method="post">
                             @csrf
                             <input name="name" id="name" type="text" placeholder="Name"/>
                             <input name="email" id="email" type="email" placeholder="Email Address"/>
