@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Country;
 use App\Coupon;
 use App\Product;
 use App\ProductsAttribute;
 use App\ProductsImage;
+use App\User;
 use DemeterChain\C;
 use foo\bar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
@@ -483,5 +486,13 @@ class ProductsController extends Controller
             Session::put('CouponCode', $data['coupon_code']);
             return back()->with('flash_message_success','Coupon Code Successfully applied. You are availing discount!');
         }
+    }
+
+    public function checkout(Request $request)
+    {
+        $user_id=Auth::user()->id;
+        $userDetails=User::find($user_id);
+        $countries=Country::get();
+        return view('product.checkout',compact('userDetails','countries'));
     }
 }

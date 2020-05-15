@@ -40,12 +40,18 @@ Route::get('/login-user','UsersController@userLoginregister');
 Route::post('/user-login','UsersController@login');
 //user account
 //all route after login
-Route::get('/check-user-pwd','UsersController@check_password')->name('check_user_pwd');
+
 Route::group(['middleware'=>['frontlogin']],function (){
     Route::match(['get','post'],'/account','UsersController@account');
     //check current password
-
+    Route::get('/check-user-pwd','UsersController@check_password')->name('check_user_pwd');
     Route::post('/update-user-pwd','UsersController@update_password');
+    Route::match(['get','post'],'/cart','ProductsController@cart_page');
+    Route::get('/cart/update-quantity/{id}/{quantity}','ProductsController@updateCartProduct');
+    Route::get('/cart/delete-product/{id}','ProductsController@deleteCartProduct');
+    //checkout Route
+    Route::match(['get','post'],'/checkout','ProductsController@checkout');
+
 
 });
 
