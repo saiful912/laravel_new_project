@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -88,6 +89,37 @@ class UsersController extends Controller
             echo 'false';
         }else{
             echo 'success';die();
+        }
+    }
+    
+    //check user password
+    public function check_password(Request $request)
+    {
+        $data=$request->all();
+        $current_password=$data['current_pwd'];
+        $user_id=Auth::user()->id();
+        $check_password=User::where('id',$user_id)->first();
+        if (Hash::check($current_password,$check_password->password)){
+            echo "true";die;
+        }else{
+            echo "false";die;
+        }
+    }
+    //update password
+    public function update_password(Request $request)
+    {
+        if($request->isMethod('post')){
+            $data=$request->all();
+            $old_pwd=User::where('id',Auth::user()->id)->first();
+            $current_password=$data['current_pwd'];
+            if (Hash::check($current_password,$old_pwd->password)){
+                $new_pwd=bcrypt($data['new_password']);
+                User::where('id',Auth::User()->id)->update(['password'=>$new_pwd]);
+                return back()->with('flash_message_success','Password Update Successfully!');
+            }else{
+                return redirect()->back()->with('flash_message_error','Current Password is Incorrect!');
+            }
+
         }
     }
 }

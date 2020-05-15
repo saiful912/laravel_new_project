@@ -46,12 +46,12 @@
                     <div class="signup-form"><!--sign up form-->
                         <h2>Update Password</h2>
                         {{--<for  action="{{url('/login-register')}}" method="post">--}}
-                        <form id="registerForm" action="#" method="post">
-                            @csrf
-                            <input name="name" id="name" type="text" placeholder="Name"/>
-                            <input name="email" id="email" type="email" placeholder="Email Address"/>
-                            <input name="password" id="myPassword" type="password" placeholder="Password"/>
-                            <button type="submit" class="btn btn-success" >SignUp</button>
+                        <form id="passwordForm" name="passwordForm" action="{{url('/update-user-pwd')}}" method="POST">
+                          {{csrf_field()}}
+                                <input type="password" name="current_pwd"  placeholder="Current Password" />
+                                <span id="chkPwd"></span>
+                            <input name="new_password" id="new_password" type="password" placeholder="New Password"/>
+                            <button type="submit" class="btn btn-success" >Update Password</button>
                         </form>
 
 

@@ -40,8 +40,13 @@ Route::get('/login-user','UsersController@userLoginregister');
 Route::post('/user-login','UsersController@login');
 //user account
 //all route after login
+Route::get('/check-user-pwd','UsersController@check_password')->name('check_user_pwd');
 Route::group(['middleware'=>['frontlogin']],function (){
     Route::match(['get','post'],'/account','UsersController@account');
+    //check current password
+
+    Route::post('/update-user-pwd','UsersController@update_password');
+
 });
 
 //user logout
