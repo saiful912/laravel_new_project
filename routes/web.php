@@ -51,8 +51,10 @@ Route::group(['middleware'=>['frontlogin']],function (){
     Route::get('/cart/delete-product/{id}','ProductsController@deleteCartProduct');
     //checkout Route
     Route::match(['get','post'],'/checkout','ProductsController@checkout');
-
-
+    //order review
+    Route::match(['get','post'],'/order-review','ProductsController@orderReview');
+    //place order
+    Route::match(['get','post'],'/place-order','ProductsController@placeOrder');
 });
 
 //user logout

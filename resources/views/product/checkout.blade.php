@@ -2,6 +2,20 @@
 @section('content')
     <section id="form" style="margin: 0;"><!--form-->
         <div class="container">
+            @if(Session::has('flash_message_error'))
+                <div class="alert alert-error alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">x</button>
+                    <strong>{!! session('flash_message_error') !!}</strong>
+                </div>
+            @endif
+            @if(Session::has('flash_message_success'))
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss="alert">x</button>
+                    <strong>{!! session('flash_message_success') !!}</strong>
+                </div>
+            @endif
+            <form action="{{url('checkout')}}" method="post">
+                {{csrf_field()}}
             <div class="row">
                 <div class="col-sm-4 col-sm-offset-1">
                     <div class="login-form"><!--login form-->
@@ -47,25 +61,32 @@
                     <div class="signup-form"><!--sign up form-->
                         <h2>Ship TO</h2>
                         <div class="form-group">
-                            <input type="text" placeholder="Shipping Name" class="form-control">
+                            <input name="shipping_name" @if(!empty($shippingDetails->name)) value="{{$shippingDetails->name}}" @endif id="shipping_name" type="text" placeholder="Shipping Name" class="form-control">
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Shipping Address" class="form-control">
+                            <input name="shipping_address" id="shipping_address" @if(!empty($shippingDetails->address)) value="{{$shippingDetails->address}}" @endif  type="text" placeholder="Shipping Address" class="form-control">
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Shipping City" class="form-control">
+                            <input name="shipping_city" @if(!empty($shippingDetails->city)) value="{{$shippingDetails->city}}" @endif  id="shipping_city" type="text" placeholder="Shipping City" class="form-control">
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Shipping State" class="form-control">
+                            <input name="shipping_state" @if(!empty($shippingDetails->state)) value="{{$shippingDetails->state}}" @endif  id="shipping_state" type="text" placeholder="Shipping State" class="form-control">
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Shipping Country" class="form-control">
+                            <select name="shipping_country" id="shipping_country" required>
+                                <option value="">Select Country</option>
+                                @foreach($countries as $country)
+                                    <option value="{{$country->country_name}}" @if(!empty($shippingDetails->country) && $country->country_name==$shippingDetails->country) selected @endif>
+                                        {{$country->country_name}}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Shipping Pincode" class="form-control">
+                            <input name="shipping_pincode" @if(!empty($shippingDetails->pincode)) value="{{$shippingDetails->pincode}}" @endif  id="shipping_pincode" type="text" placeholder="Shipping Pincode" class="form-control">
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Shipping Mobile" class="form-control">
+                            <input name="shipping_mobile" @if(!empty($shippingDetails->mobile)) value="{{$shippingDetails->mobile}}" @endif  id="shipping_mobile" type="text" placeholder="Shipping Mobile" class="form-control">
                         </div>
                         <div class="form-group">
                             <button type="submit"  class="btn btn-success">Checkout</button>
@@ -73,6 +94,7 @@
                     </div><!--/sign up form-->
                 </div>
             </div>
+            </form>
         </div>
     </section><!--/form-->
 @endsection

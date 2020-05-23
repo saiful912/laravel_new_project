@@ -160,26 +160,26 @@ $().ready(function () {
         eyeImg:"/images/frontend_image/eye.svg"
     });
     //check user current password
-    // $('#current_pwd').keyup(function () {
-    //     var current_pwd=$(this).val();
-    //     $.ajax({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-    //         type:'get',
-    //         url: '/check-user-pwd',
-    //         data: {current_pwd:current_pwd},
-    //         success:function (resp) {
-    //             if (resp =='false') {
-    //                 $("#chkPwd").html("<font color='red'>Current Password Is Incorrect</font>")
-    //             }else if (resp=='true') {
-    //                 $("#chkPwd").html("<font color='green'>Current Password Is Correct</font>")
-    //             }
-    //         },error:function () {
-    //             alert('Error');
-    //         }
-    //     })
-    // })
+    $('#current_pwd').keyup(function () {
+        var current_pwd=$(this).val();
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type:'get',
+            url: '/check-user-pwd',
+            data: {current_pwd:current_pwd},
+            success:function (resp) {
+                if (resp =='false') {
+                    $("#chkPwd").html("<font color='red'>Current Password Is Incorrect</font>")
+                }else if (resp=='true') {
+                    $("#chkPwd").html("<font color='green'>Current Password Is Correct</font>")
+                }
+            },error:function () {
+                alert('Error');
+            }
+        })
+    });
     $("#passwordForm").validate({
         rules:{
             current_pwd:{
@@ -209,28 +209,35 @@ $().ready(function () {
             $(element).parents('.control-group').addClass('success');
         }
     });
-});
-$(document).ready(function () {
-    $("#current_pwd").keyup(function () {
-        var current_pwd= $(this).val();
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            type:'get',
-            url:'/check-user-pwd',
-            data:{current_pwd:current_pwd},
-            success:function (resp) {
-                if (resp=='false') {
-                    $("#chkPwd").html("<font color='red'>Current Password Is Incorrect</font>");
-                }else if (resp=='true') {
-                    $("#chkPwd").html("<font color='green'>Current Password Is Correct</font>");
-                }
-            },error:function () {
-                alert("Error");
-            }
-        })
 
+    //copy billing address to shipping address script
+    $("#billtoship").click(function () {
+        if (this.checked){
+            $("#shipping_name").val($("#billing_name").val());
+            $("#shipping_address").val($("#billing_address").val());
+            $("#shipping_city").val($("#billing_city").val());
+            $("#shipping_state").val($("#billing_state").val());
+            $("#shipping_country").val($("#billing_country").val());
+            $("#shipping_pincode").val($("#billing_pincode").val());
+            $("#shipping_mobile").val($("#billing_mobile").val());
+        }else{
+            $("#shipping_name").val('');
+            $("#shipping_address").val('');
+            $("#shipping_city").val('');
+            $("#shipping_state").val('');
+            $("#shipping_country").val('');
+            $("#shipping_pincode").val('');
+            $("#shipping_mobile").val('');
+        }
     })
 });
+function selectPaymentMethod() {
+    if ($('#Paypal').is(':checked') || $('#COD').is(':checked')){
+
+    }else {
+        alert("please select a payment method");
+        return false;
+    }
+}
+
 

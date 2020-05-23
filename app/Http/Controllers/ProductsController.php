@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Country;
 use App\Coupon;
+use App\DeliveryAddress;
+use App\Order;
+use App\OrdersProduct;
 use App\Product;
 use App\ProductsAttribute;
 use App\ProductsImage;
@@ -413,8 +416,15 @@ class ProductsController extends Controller
 
     public function cart_page(Request $request)
     {
-        $session_id = Session::get('session_id');
-        $userCart = DB::table('carts')->where(['session_id' => $session_id])->get();
+
+        if(Auth::check()){
+            $user_email=Auth::user()->email;
+            $userCart = DB::table('carts')->where(['user_email' => $user_email])->get();
+        }else{
+            $session_id = Session::get('session_id');
+            $userCart = DB::table('carts')->where(['session_id' => $session_id])->get();
+        }
+
         foreach ($userCart as $key => $product) {
             $productDetails = Product::where('id', $product->product_id)->first();
             $userCart[$key]->image = $productDetails->image;
@@ -469,8 +479,14 @@ class ProductsController extends Controller
             }
             //coupon is valid for discount
             //Get cart total amount
-            $session_id = Session::get('session_id');
-            $userCart = DB::table('carts')->where(['session_id' => $session_id])->get();
+
+            if (Auth::check()){
+                $user_email=Auth::user()->email;
+                $userCart = DB::table('carts')->where(['user_email' => $user_email])->get();
+            }else{
+                $session_id = Session::get('session_id');
+                $userCart = DB::table('carts')->where(['session_id' => $session_id])->get();
+            }
             $total_amount = 0;
             foreach ($userCart as $item) {
                 $total_amount = $total_amount + ($item->price * $item->quantity);
@@ -491,8 +507,125 @@ class ProductsController extends Controller
     public function checkout(Request $request)
     {
         $user_id=Auth::user()->id;
+        $user_email=Auth::user()->email;
         $userDetails=User::find($user_id);
         $countries=Country::get();
-        return view('product.checkout',compact('userDetails','countries'));
+        //check if shipping address exists
+        $shippingCount=DeliveryAddress::where('user_id',$user_id)->count();
+        if ($shippingCount>0){
+            $shippingDetails=DeliveryAddress::where('user_id',$user_id)->first();
+        }
+        //update cart table with user email
+        $session_id=Session::get('session_id');
+        DB::table('carts')->where(['session_id'=>$session_id])->update(['user_email'=>$user_email]);
+        if ($request->isMethod('post')){
+            $data=$request->all();
+//            echo "<pre>";print_r($data);die();
+            // check if any field is empty return back
+            if (empty($data['billing_name'])
+                || empty($data['billing_address'])
+                || empty($data['billing_city'])
+                || empty($data['billing_state'])
+                || empty($data['billing_country'])
+                || empty($data['billing_pincode'])
+                || empty($data['billing_mobile'])){
+                return back()->with('flash_message_error','Please fill all fields to continue!');
+            }
+            //update user details
+            User::where('id',$user_id)->update(['name'=>$data['billing_name'],'address'=>$data['billing_address'],
+                'city'=>$data['billing_city'],'state'=>$data['billing_state'],'country'=>$data['billing_country'],
+                'pincode'=>$data['billing_pincode'],'mobile'=>$data['billing_mobile']]);
+
+
+            if ($shippingCount>0){
+                DeliveryAddress::where('user_id',$user_id)->update(['name'=>$data['shipping_name'],'address'=>$data['shipping_address'],
+                    'city'=>$data['shipping_city'],'state'=>$data['shipping_state'],'country'=>$data['shipping_country'],
+                    'pincode'=>$data['shipping_pincode'],'mobile'=>$data['shipping_mobile']]);
+            }else{
+                $shipping=new DeliveryAddress();
+                $shipping->user_id=$user_id;
+                $shipping->user_email=$user_email;
+                $shipping->name=$data['shipping_name'];
+                $shipping->address=$data['shipping_address'];
+                $shipping->city=$data['shipping_city'];
+                $shipping->state=$data['shipping_state'];
+                $shipping->country=$data['shipping_country'];
+                $shipping->pincode=$data['shipping_pincode'];
+                $shipping->mobile=$data['shipping_mobile'];
+                $shipping->save();
+            }
+            return redirect(url('/order-review'));
+        }
+        return view('product.checkout',compact('userDetails','countries','shippingDetails'));
+    }
+
+    public function orderReview()
+    {
+        $user_id=Auth::user()->id;
+        $user_email=Auth::user()->email;
+        $userDetails=User::where('id',$user_id)->first();
+        $shippingDetails=DeliveryAddress::where('user_id',$user_id)->first();
+        $userCart = DB::table('carts')->where(['user_email' => $user_email])->get();
+        foreach ($userCart as $key => $product) {
+            $productDetails = Product::where('id', $product->product_id)->first();
+            $userCart[$key]->image = $productDetails->image;
+        }
+        return view('product.order_review',compact('userDetails','shippingDetails','userCart'));
+    }
+
+    //place order
+    public function placeOrder(Request $request)
+    {
+        if ($request->isMethod('post')){
+            $data=$request->all();
+           $user_id=Auth::user()->id;
+           $user_email=Auth::user()->email;
+           //get shipping address of user
+            $shippingDetails=DeliveryAddress::where(['user_email'=>$user_email])->first();
+
+            if (empty(Session::get('CouponCode'))){
+               $coupon_code= '';
+            }else{
+                $coupon_code=Session::get('CouponCode');
+            }
+            if (empty(Session::get('CouponAmount'))){
+                $coupon_amount= '';
+            }else{
+                $coupon_amount=Session::get('CouponAmount');
+            }
+
+            $order=new Order();
+            $order->user_id=$user_id;
+            $order->user_email=$user_email;
+            $order->name=$shippingDetails->name;
+            $order->address=$shippingDetails->address;
+            $order->city=$shippingDetails->city;
+            $order->state=$shippingDetails->state;
+            $order->pincode=$shippingDetails->pincode;
+            $order->country=$shippingDetails->country;
+            $order->mobile=$shippingDetails->mobile;
+            $order->coupon_code=$coupon_code;
+            $order->coupon_amount=$coupon_amount;
+            $order->order_status="New";
+            $order->payment_method=$data['payment_method'];
+            $order->grand_total=$data['grand_total'];
+            $order->save();
+
+            $order_id=DB::getPdo()->lastInsertId();
+            $cartProducts=DB::table('carts')->where(['user_email'=>$user_email])->get();
+            foreach ($cartProducts as $pro){
+                $cartPro=new OrdersProduct();
+                $cartPro->order_id=$order_id;
+                $cartPro->user_id=$user_id;
+                $cartPro->product_id=$pro->product_id;
+                $cartPro->product_code=$pro->product_code;
+                $cartPro->product_name=$pro->product_name;
+                $cartPro->product_size=$pro->size;
+                $cartPro->product_color=$pro->product_color;
+                $cartPro->product_price=$pro->price;
+                $cartPro->product_qty=$pro->quantity;
+                $cartPro->save();
+            }
+        }
     }
 }
