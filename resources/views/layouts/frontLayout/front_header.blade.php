@@ -66,7 +66,7 @@ $mainCategories=Controller::mainCategories();
                         <ul class="nav navbar-nav">
                             <li><a href="{{url('/login-register')}}"><i class="fa fa-user"></i> Account</a></li>
                             <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
-                            <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+                            <li><a href="{{url('/orders')}}"><i class="fa fa-crosshairs"></i> Orders</a></li>
                             <li><a href="{{url('/cart')}}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
                             @if(empty(Auth::check()))
                             <li><a href="{{url('/login-register')}}"><i class="fa fa-lock"></i> Login</a></li>

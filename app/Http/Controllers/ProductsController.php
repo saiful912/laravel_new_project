@@ -389,8 +389,10 @@ class ProductsController extends Controller
         Session::forget('CouponCode');
         $data = $request->all();
 //        echo "<pre>";print_r($data);die();
-        if (empty($data['user_email'])) {
+        if (empty(Auth::user()->email)) {
             $data['user_email'] = '';
+        }else{
+            $data['user_email'] = Auth::user()->email;
         }
         $session_id = Session::get('session_id');
         if (empty($session_id)) {
@@ -588,10 +590,10 @@ class ProductsController extends Controller
             }else{
                 $coupon_code=Session::get('CouponCode');
             }
-            if (empty(Session::get('CouponAmount'))){
-                $coupon_amount= '';
+            if (empty(Session::get('Amount'))){
+                $coupon_amount= 0;
             }else{
-                $coupon_amount=Session::get('CouponAmount');
+                $coupon_amount=Session::get('Amount');
             }
 
             $order=new Order();
@@ -626,6 +628,33 @@ class ProductsController extends Controller
                 $cartPro->product_qty=$pro->quantity;
                 $cartPro->save();
             }
+            Session::put('order_id',$order_id);
+            Session::put('grand_total',$data['grand_total']);
+            return redirect('/thanks');
         }
+    }
+
+    //thanks page
+    public function thanks(Request $request)
+    {
+        $user_email=Auth::user()->email;
+        DB::table('carts')->where('user_email',$user_email)->delete();
+        return view('product.thanks');
+    }
+
+//    users order page
+    public function usersOrders()
+    {
+        $user_id=Auth::user()->id;
+        $orders=Order::with('orders')->where('user_id',$user_id)->orderBy('id','desc')->get();
+        return view('order.user_orders',compact('orders'));
+    }
+
+    //users order product page
+    public function usersOrdersDetails($order_id)
+    {
+        $user_id=Auth::user()->id;
+        $order_details=Order::with('orders')->where('id',$order_id)->first();
+        return view('order.user_order_details',compact('order_details'));
     }
 }
